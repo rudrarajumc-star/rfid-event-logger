@@ -209,6 +209,74 @@ example was genuine evidence of a real capture, it just had a display-timestamp
 resolution problem, not a logic bug. The logic was correct all along; the
 *evidence* needed better instrumentation to prove it.
 
+## v2.0.0 — Dual-mode configuration (SPS / LAI)
+
+Refactored the single-organization firmware into a configurable
+platform: one `OrganizationConfig` struct picked per physical device
+(`config/organization.h`, gitignored) drives the dashboard title, role
+label, whether a site code is required, and org-specific short/long
+session thresholds, instead of an `SPS`/`LAI` string scattered through
+the code as it was in v1.x's minimal `CURRENT_MODE` flag.
+
+Along with the config split, the CSV/log schema grew from 8 fields to
+14 (`event_id`, `organization`, `site_code`, `program_code`,
+`card_alias`, `session_id`, `device_id`, `firmware_version` added), raw
+UIDs stopped being logged anywhere in favor of a per-card `alias`, and
+user data moved to a gitignored `config/users_private.h`. See
+`docs/LAI_MODE.md` for the full rationale and schema, and
+`docs/evidence/lai/` for real-hardware test evidence using two
+synthetic tutor identities on the project's existing test cards.
+
+**Caught before considering this "done": the CSV schema change makes
+old evidence non-comparable at a glance.** The Evidence section in the
+main README has log lines captured on v1.4's 8-field schema; a fresh
+export from v2.0.0 firmware has 14 fields. Rather than leave that
+silently confusing for anyone diffing the two, the README now carries
+an explicit schema-version note pointing this out — same "flag it
+instead of hoping no one notices" pattern as the short-session timing
+correction above.
+
+**Explicitly not done in this version, and not claimed as done:** an
+LAI-mode short-session/long-session test with real timing evidence (the
+millisecond-precision method from the v1.4 correction above hasn't been
+re-run under LAI mode specifically), a revoked-card (`inactive_user`)
+test, a reboot-mid-session test (currently, a reboot silently loses any
+open session — no record is made that this happened, which is a real
+gap worth fixing before a pilot, not after), and — the big one — any
+actual LAI pilot. See `docs/PILOT_PROTOCOL.md` for what phases 2 and 3
+of that would require and why none of it can be simulated or assumed.
+
+## v2.1.0 — Student check-in + one-click subject selection
+
+Added a second role path alongside tutor/coordinator: `role ==
+"student"`. A student check-in logs immediately with `program_code =
+"PENDING"` and the dashboard shows subject links
+(MATH/READING/SCIENCE/GENERAL/ADMIN) next to that student's row.
+Picking one hits a new `GET /set-subject` endpoint, which validates the
+user code, the subject value, and that the session is actually still
+open, then logs a separate `subject-selected` event and updates the
+live session — the original check-in row is never rewritten. Verified
+live: `STUDENT-001` (re-registered onto the project's second physical
+test card) checked in, showed the subject links on the dashboard,
+`subject-selected` logged correctly with `program_code = READING`, and
+`TUTOR-001` checked in simultaneously using the device default
+`GENERAL` — confirming both roles coexist on one device without
+interfering. See `docs/evidence/lai/`.
+
+**Not verified this pass:** a student checkout. The evidence capture
+only covers check-in and subject-selection; the checkout path reuses
+the same `handleKnownScan()` logic already verified for tutors, but it
+hasn't been separately watched with a student session specifically, and
+"reuses tested logic" is not the same standard as "watched working" —
+worth actually doing before calling this feature done, not just
+assuming the shared code path makes it unnecessary.
+
+**Flagged, not fixed, in this version:** this feature is a real step up
+in privacy stakes from tutor-only tracking, even with zero identifying
+data collected. `docs/PRIVACY.md` and the pilot-approval template were
+both updated so "are minors tracked" gets an honest per-pilot answer
+instead of inheriting the tutor-only version's blanket "no."
+
 ## What's still unverified
 
 - MicroSD card actually writing to a physical card (`sdAvailable` has

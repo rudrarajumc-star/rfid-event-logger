@@ -1,0 +1,3 @@
+user_code,role,card_alias,verified_minutes,flagged_sessions_included,source
+TUTOR-001,tutor,CARD-T1,0,0,ring_buffer_since_boot_only
+TUTOR-002,tutor,CARD-T2,0,0,ring_buffer_since_boot_only

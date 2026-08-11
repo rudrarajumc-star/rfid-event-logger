@@ -1,0 +1,7 @@
+event_id,timestamp,organization,site_code,program_code,user_code,role,card_alias,event_type,session_id,duration_minutes,status,device_id,firmware_version
+E00006,2026-08-11 19:12:58,LAI,SITE-01,GENERAL,TUTOR-001,tutor,CARD-T1,check-in,S-20260811-003,,success,LAI-READER-01,v2.0.0-dual-mode
+E00005,2026-08-11 19:12:46,LAI,SITE-01,GENERAL,TUTOR-001,tutor,CARD-T1,scan,S-20260811-001,,duplicate_ignored,LAI-READER-01,v2.0.0-dual-mode
+E00004,2026-08-11 19:12:44,LAI,SITE-01,GENERAL,TUTOR-001,tutor,CARD-T1,check-out,S-20260811-001,0,success,LAI-READER-01,v2.0.0-dual-mode
+E00003,2026-08-11 19:12:31,LAI,SITE-01,GENERAL,TUTOR-002,tutor,CARD-T2,scan,S-20260811-002,,duplicate_ignored,LAI-READER-01,v2.0.0-dual-mode
+E00002,2026-08-11 19:12:30,LAI,SITE-01,GENERAL,TUTOR-002,tutor,CARD-T2,check-in,S-20260811-002,,success,LAI-READER-01,v2.0.0-dual-mode
+E00001,2026-08-11 19:12:27,LAI,SITE-01,GENERAL,TUTOR-001,tutor,CARD-T1,check-in,S-20260811-001,,success,LAI-READER-01,v2.0.0-dual-mode

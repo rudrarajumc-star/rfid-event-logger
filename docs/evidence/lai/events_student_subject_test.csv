@@ -1,0 +1,4 @@
+event_id,timestamp,organization,site_code,program_code,user_code,role,card_alias,event_type,session_id,duration_minutes,status,device_id,firmware_version
+E00003,T+701s,LAI,SITE-01,READING,STUDENT-001,student,CARD-S1,subject-selected,S-00000000-001,,success,LAI-READER-01,v2.1.0-student-subject
+E00002,T+674s,LAI,SITE-01,GENERAL,TUTOR-001,tutor,CARD-T1,check-in,S-00000000-002,,success,LAI-READER-01,v2.1.0-student-subject
+E00001,T+666s,LAI,SITE-01,PENDING,STUDENT-001,student,CARD-S1,check-in,S-00000000-001,,success,LAI-READER-01,v2.1.0-student-subject

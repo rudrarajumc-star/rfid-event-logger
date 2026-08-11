@@ -8,6 +8,19 @@ stopping the core scan-and-log pipeline.
 **[Watch the demo](https://youtu.be/MSz-1_x-4so)** · Full debugging
 history: [`docs/DEVELOPMENT_LOG.md`](./docs/DEVELOPMENT_LOG.md)
 
+### Configurable for more than one organization
+
+As of `v2.0.0-dual-mode`, one firmware supports two independent
+deployment contexts through a single config choice — SPS workforce
+attendance (documented on this page) and LAI tutor attendance /
+volunteer-hour verification, with anonymous tutor codes instead of
+student data. See [`docs/LAI_MODE.md`](./docs/LAI_MODE.md) for that
+mode specifically — **engineering-complete and tested with synthetic
+data, not yet piloted with a real organization**; see
+[`docs/PILOT_PROTOCOL.md`](./docs/PILOT_PROTOCOL.md) for what that would
+require and [`docs/PRIVACY.md`](./docs/PRIVACY.md) for the privacy
+constraints either mode needs before real use.
+
 ## Status
 
 Distinguishes **Verified** (watched working on real hardware) from
@@ -119,13 +132,25 @@ caused a real bug — see dev log):
    `LiquidCrystal_I2C`, `SD`, and `WebServer` (last two ship with the
    ESP32 board package).
 2. Wire per the diagram above.
-3. Open `rfid_event_logger.ino`, select **ESP32 Dev Module**.
-4. Fill in `WIFI_SSID` / `WIFI_PASSWORD` **locally only** — see security
+3. **Create your private config files — the sketch will not compile
+   without them:**
+   ```bash
+   cp config/organization.example.h config/organization.h
+   cp config/users.example.h config/users_private.h
+   ```
+   Both are gitignored. Edit `config/organization.h` to pick
+   `SPS_MODE` or `LAI_MODE`, and `config/users_private.h` to register
+   real cards (see step 6). Full details in
+   [`docs/LAI_MODE.md`](./docs/LAI_MODE.md) if you're setting up LAI
+   mode specifically.
+4. Open `rfid_event_logger.ino`, select **ESP32 Dev Module**.
+5. Fill in `WIFI_SSID` / `WIFI_PASSWORD` **locally only** — see security
    note below, never commit real credentials.
-5. Upload, open Serial Monitor at 115200 baud.
-6. Tap an unregistered card — its UID prints to Serial. Add it to
-   `knownUsers[]` to register it.
-7. Once WiFi connects, visit the printed dashboard URL in a browser on
+6. Upload, open Serial Monitor at 115200 baud.
+7. Tap an unregistered card — its UID prints to Serial. Copy it into a
+   new row in `config/users_private.h` with an anonymous code and
+   alias (e.g. `TUTOR-004`, `CARD-T4`), set `active = true`, re-upload.
+8. Once WiFi connects, visit the printed dashboard URL in a browser on
    the same network.
 
 ### Security note
@@ -145,6 +170,16 @@ gitignored `secrets.h`:
 
 Full logs, the dashboard walkthrough, and the duplicate/anomaly tests are
 in the [demo video](https://youtu.be/MSz-1_x-4so).
+
+> **Schema note:** the log lines below were captured on `v1.4`, which
+> used an 8-field CSV schema. The current firmware (`v2.0.0-dual-mode`)
+> logs 14 fields per event (adds `event_id`, `organization`, `site_code`,
+> `program_code`, `card_alias`, `session_id`, `device_id`,
+> `firmware_version` — see `docs/LAI_MODE.md` for the full schema). The
+> duplicate-suppression and short-session logic these lines demonstrate
+> is unchanged between the two versions; only the number of columns
+> grew. If you diff these lines against a fresh export from current
+> firmware, the field count mismatch is expected, not a bug.
 
 **Duplicate suppression** — unaffected by the timestamp-resolution issue
 above since a 1s-apart pair is always <2000ms:
@@ -199,6 +234,10 @@ actual wired board and the live dashboard, not mockups.
   security-sensitive leak — an RFID UID isn't a secret, it's a public
   identifier readable by any nearby reader — but it's disclosed here
   rather than silently glossed over.
+- LAI mode is engineering-complete and hardware-tested with synthetic
+  data only — it has not been piloted with a real organization, real
+  tutors, or real cards. See `docs/LAI_MODE.md`, `docs/PILOT_PROTOCOL.md`,
+  and `docs/PRIVACY.md` before treating it as anything more than that.
 
 ## License
 
