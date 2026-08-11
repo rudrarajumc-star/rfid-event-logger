@@ -81,11 +81,14 @@ SPS mode: `docs/screenshots/wiring.png` and `docs/screenshots/dashboard.png`
 are real photos, already in the repo and linked from the README. A
 Serial Monitor screenshot is still outstanding there.
 
-LAI mode: no screenshots — real CSV exports instead, in
-`docs/evidence/lai/`, which are easier to verify than an image and
-don't risk leaking anything if a screenshot happened to catch something
-in the background. Don't add a LAI dashboard screenshot without
-checking it doesn't expose real data first.
+LAI mode: `docs/evidence/lai/dashboard_screenshot.png` — a live capture
+of the dashboard mid-test, cropped to remove browser chrome and the
+personal bookmarks bar (nothing else altered). The real CSV exports in
+the same folder remain the primary evidence since they're easier to
+independently verify than an image; the screenshot corroborates them,
+it doesn't replace them. Checked before adding: only synthetic test
+data (`CARD-T1`/`CARD-S1`, anonymous codes) is visible, no real names
+or credentials.
 
 ## 6. Feature status — the actual source of truth
 

@@ -10,15 +10,21 @@ tutor identities (`TUTOR-001` / `CARD-T1`, `TUTOR-002` / `CARD-T2`) — see
 tutor, real card, or real LAI site was involved. It demonstrates the
 dual-mode firmware works, nothing about whether LAI wants to use it.
 
+![LAI dashboard mid-test, showing tutor and student active sessions plus the recent-events log](dashboard_screenshot.png)
+
 ## What was tested and observed
 
 1. Device boot in LAI mode — dashboard title ("LAI Tutor Attendance"),
    subtitle ("Volunteer Hour Verification"), and site/program code
    ("SITE-01 · GENERAL") all rendered correctly, confirmed live in the
-   browser at the time of the test. No screenshot or raw boot-log text
-   capture is included in this folder — only the two CSV exports below,
-   which are the actual load-bearing evidence and are easier to verify
-   than an image.
+   browser at the time of the test. See `dashboard_screenshot.png` in
+   this folder — a live capture of the dashboard mid-test, showing the
+   active-users table (`CARD-T1`/tutor, `CARD-S1`/student with
+   `READING` subject selected) and the recent-events table underneath
+   it. Cropped to remove browser chrome/personal bookmarks only —
+   nothing else altered. The CSV exports below remain the primary
+   load-bearing evidence since they're easier to independently verify
+   than an image; the screenshot is corroborating, not a replacement.
 2. Tutor check-in (`TUTOR-001`, then `TUTOR-002`) — both correctly
    logged `success`, both appeared in the dashboard's active-tutor table
    simultaneously with independent elapsed-time counters.
