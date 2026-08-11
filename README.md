@@ -5,7 +5,7 @@ dashboard, CSV export, and WiFi/NTP timestamps — built around a
 graceful-degradation design where any optional subsystem can fail without
 stopping the core scan-and-log pipeline.
 
-**[Watch the demo](https://youtu.be/your-video-id-here)** · Full debugging
+**[Watch the demo](https://youtu.be/MSz-1_x-4so)** · Full debugging
 history: [`docs/DEVELOPMENT_LOG.md`](./docs/DEVELOPMENT_LOG.md)
 
 ## Status
@@ -142,7 +142,7 @@ gitignored `secrets.h`:
 ## Evidence
 
 Full logs, the dashboard walkthrough, and the duplicate/anomaly tests are
-in the [demo video](https://youtu.be/your-video-id-here). One representative
+in the [demo video](https://youtu.be/MSz-1_x-4so). One representative
 Serial excerpt (duplicate suppression, unaffected by the timestamp-resolution
 issue above since a 1s-apart pair is always <2000ms):
 
