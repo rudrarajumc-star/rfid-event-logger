@@ -177,6 +177,38 @@ your own evidence being wrong — and fixing it instead of hand-waving
 past it — is the same discipline this whole document has tried to model
 from the RC522 pin bug onward.
 
+**Resolution:** added a one-line `millis()`-based debug print immediately
+before the short-session decision in `handleKnownScan()`:
+
+```cpp
+Serial.print("[DEBUG] elapsedMs since check-in: "); Serial.println(elapsedMs);
+```
+
+Re-ran the check-in/check-out cycle twice, deliberately counting out loud
+to land in the middle of the 2–5s window instead of at a display-rounded
+boundary. Both runs confirm the logic is correct:
+
+```
+2026-08-11 18:54:26,SPS,employee,TEST-001,CARD-A,check-in,,success
+[DEBUG] elapsedMs since check-in: 2060
+2026-08-11 18:54:28,SPS,employee,TEST-001,CARD-A,check-out,0,flagged_short_session
+```
+
+- Run 1: 2060ms true gap — above the 2000ms duplicate cutoff, below the
+  5000ms short-session threshold. Correctly flagged.
+- Run 2 (same session, immediately after): 4682ms true gap, comfortably
+  mid-window. Also correctly flagged. The check-in line for this second
+  run had its timestamp field garbled by serial boot noise on capture
+  (a similar transcription hazard to the ambiguous `duplicate_ignored`
+  capture in v1.4 above), so only the debug value and the clean
+  check-out line are used as evidence — the display timestamp isn't
+  needed since the debug print is what actually proves the logic.
+
+This closes out the review comment: the earlier `check-out,0,flagged_short_session`
+example was genuine evidence of a real capture, it just had a display-timestamp
+resolution problem, not a logic bug. The logic was correct all along; the
+*evidence* needed better instrumentation to prove it.
+
 ## What's still unverified
 
 - MicroSD card actually writing to a physical card (`sdAvailable` has

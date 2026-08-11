@@ -246,6 +246,7 @@ void handleKnownScan(int userIndex, String uidStr) {
     showMessage("Checked In", user.code);
   } else {
     unsigned long elapsedMs = millis() - s.checkInMillis;
+    Serial.print("[DEBUG] elapsedMs since check-in: "); Serial.println(elapsedMs);
     unsigned long durationMin = elapsedMs / 60000UL;
     s.checkedIn = false;
     String status = (elapsedMs < SHORT_SESSION_MS) ? "flagged_short_session" : "success";

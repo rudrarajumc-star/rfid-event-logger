@@ -22,18 +22,20 @@ as working unless it was actually observed working.
 | Web dashboard + CSV export | **Verified** |
 | Fail-safe (WiFi/SD/LCD optional) | **Verified** |
 | Duplicate-scan suppression (2s window) | **Verified** |
-| Short-session anomaly flag (2–5s window) | **Verify again** — see note below |
+| Short-session anomaly flag (2–5s window) | **Verified** — re-tested with millisecond diagnostics, see note below |
 | Dashboard overview stats | **Verified** |
 | MicroSD card logging | **Pending** — wired, not yet verified writing |
 | Physical LCD output | **Pending** — hardware not yet installed |
 | Backend / database / multi-device sync | **Not built** — out of scope for this prototype |
 
-> **Open issue:** the short-session example previously in this README had
-> timestamps only 1 second apart, which is mathematically impossible to
-> distinguish from the 2-second duplicate window given 1-second log
-> resolution — a real inconsistency, not just a typo. It's been pulled
-> pending a re-test with a wider, unambiguous gap (3s+). See
-> `docs/DEVELOPMENT_LOG.md` for the full explanation.
+> **Resolved:** an earlier version of this README had a short-session
+> example with timestamps only 1 second apart, which is mathematically
+> impossible to distinguish from the 2-second duplicate window given
+> 1-second log resolution — a real inconsistency, not just a typo. The
+> firmware was instrumented with a `millis()`-based debug print and
+> re-tested; the corrected, unambiguous evidence is below. See
+> `docs/DEVELOPMENT_LOG.md` for the full explanation and the original
+> catch.
 
 ## Architecture
 
@@ -142,14 +144,29 @@ gitignored `secrets.h`:
 ## Evidence
 
 Full logs, the dashboard walkthrough, and the duplicate/anomaly tests are
-in the [demo video](https://youtu.be/MSz-1_x-4so). One representative
-Serial excerpt (duplicate suppression, unaffected by the timestamp-resolution
-issue above since a 1s-apart pair is always <2000ms):
+in the [demo video](https://youtu.be/MSz-1_x-4so).
+
+**Duplicate suppression** — unaffected by the timestamp-resolution issue
+above since a 1s-apart pair is always <2000ms:
 
 ```
 2026-08-11 17:50:42,SPS,employee,TEST-001,CARD-A,check-in,,success
 2026-08-11 17:50:43,SPS,employee,TEST-001,CARD-A,scan,,duplicate_ignored
 2026-08-11 17:50:53,SPS,employee,TEST-001,CARD-A,check-out,0,success
+```
+
+**Short-session flag, corrected test** — re-run with a `millis()`-based
+debug print added right before the flag decision, giving exact
+millisecond precision instead of the 1-second-resolution display
+timestamp. The debug line proves the true gap was 2060ms: above the
+2000ms duplicate-suppression cutoff (so it wasn't swallowed as a
+duplicate) and below the 5000ms short-session threshold (so it correctly
+got flagged) — mathematically unambiguous:
+
+```
+2026-08-11 18:54:26,SPS,employee,TEST-001,CARD-A,check-in,,success
+[DEBUG] elapsedMs since check-in: 2060
+2026-08-11 18:54:28,SPS,employee,TEST-001,CARD-A,check-out,0,flagged_short_session
 ```
 
 ## Screenshots
