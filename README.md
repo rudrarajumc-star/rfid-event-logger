@@ -147,19 +147,19 @@ Serial excerpt (duplicate suppression, unaffected by the timestamp-resolution
 issue above since a 1s-apart pair is always <2000ms):
 
 ```
-2026-08-11 17:50:42,SPS,employee,SPS-001,21130407,check-in,,success
-2026-08-11 17:50:43,SPS,employee,SPS-001,21130407,scan,,duplicate_ignored
-2026-08-11 17:50:53,SPS,employee,SPS-001,21130407,check-out,0,success
+2026-08-11 17:50:42,SPS,employee,TEST-001,CARD-A,check-in,,success
+2026-08-11 17:50:43,SPS,employee,TEST-001,CARD-A,scan,,duplicate_ignored
+2026-08-11 17:50:53,SPS,employee,TEST-001,CARD-A,check-out,0,success
 ```
 
 ## Screenshots
 
-Add 2-3 screenshots (dashboard, Serial Monitor, wired breadboard) to
-`docs/screenshots/` and reference them:
+![Wired hardware](docs/screenshots/wiring.png)
 
-```md
 ![Dashboard](docs/screenshots/dashboard.png)
-```
+
+A Serial Monitor screenshot is still outstanding — the two above are the
+actual wired board and the live dashboard, not mockups.
 
 ## Known limitations
 
@@ -167,12 +167,21 @@ Add 2-3 screenshots (dashboard, Serial Monitor, wired breadboard) to
   showing `OFF` for unverified subsystems — see dev log.
 - MicroSD logging and physical LCD output are implemented with tested
   graceful-degradation paths but not yet verified on hardware.
-- No dashboard/CSV authentication — fine for a private-network prototype.
+- No dashboard/CSV authentication — suitable only for a controlled
+  demonstration; authentication is required before processing real
+  attendance data.
 - Duplicate/anomaly thresholds (2s/5s) are tunable `const`s, not
   guarantees — a legitimately fast visit could still get flagged.
 - This is a single-device prototype: no backend, database, or
   multi-device sync. See `docs/DEVELOPMENT_LOG.md` for the full history
   and `PUBLISH_CHECKLIST.md` for what's still open.
+- Card IDs and user codes in this README/dev log are anonymized
+  (`CARD-A`/`TEST-001`, not the real values). Note for transparency: the
+  first published commit predates this anonymization pass, so the
+  original values are still recoverable from git history. This isn't a
+  security-sensitive leak — an RFID UID isn't a secret, it's a public
+  identifier readable by any nearby reader — but it's disclosed here
+  rather than silently glossed over.
 
 ## License
 

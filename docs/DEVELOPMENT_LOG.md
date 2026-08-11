@@ -43,8 +43,8 @@ At this point the full pipeline was verified end-to-end on real hardware:
 real card taps produced real log lines, e.g.:
 
 ```
-T+70s,SPS,unknown,-,6E1F4E06,scan,,denied
-T+74s,SPS,unknown,-,21130407,scan,,denied
+T+70s,SPS,unknown,-,CARD-B,scan,,denied
+T+74s,SPS,unknown,-,CARD-A,scan,,denied
 ```
 
 ## v1.3 — Web dashboard, CSV export, fail-safe framing
@@ -81,7 +81,7 @@ Verified end-to-end on real hardware:
 - CSV export confirmed via a real browser download of `attendance.csv`
 - Fail-safe confirmed live: SD and LCD were both absent/off for this
   entire test run, and WiFi/dashboard/CSV all worked correctly anyway
-- One real card (`21130407`) registered as `SPS-001` in `knownUsers[]`,
+- One real card (`CARD-A`) registered as `TEST-001` in `knownUsers[]`,
   re-flashed, and the full check-in → check-out → check-in cycle
   confirmed via real Serial output with correct `success` status and a
   computed duration on check-out
@@ -133,14 +133,14 @@ same card tapped twice, back-to-back as fast as physically possible. This
 produced an unambiguous
 `...,scan,,duplicate_ignored` line, resolving the ambiguity.
 
-Verified end-to-end on real hardware, using real card `21130407`
-(`SPS-001`):
+Verified end-to-end on real hardware, using real card `CARD-A`
+(`TEST-001`):
 
 ```
-2026-08-03 17:58:40,SPS,employee,SPS-001,21130407,check-in,,success
-2026-08-03 17:58:41,SPS,employee,SPS-001,21130407,check-out,0,flagged_short_session
-2026-08-03 17:58:43,SPS,employee,SPS-001,21130407,scan,,duplicate_ignored
-2026-08-03 17:58:46,SPS,employee,SPS-001,21130407,check-out,0,success
+2026-08-03 17:58:40,SPS,employee,TEST-001,CARD-A,check-in,,success
+2026-08-03 17:58:41,SPS,employee,TEST-001,CARD-A,check-out,0,flagged_short_session
+2026-08-03 17:58:43,SPS,employee,TEST-001,CARD-A,scan,,duplicate_ignored
+2026-08-03 17:58:46,SPS,employee,TEST-001,CARD-A,check-out,0,success
 ```
 
 - Check-in → check-out under 5s: correctly flagged `flagged_short_session`
