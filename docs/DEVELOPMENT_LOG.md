@@ -153,6 +153,30 @@ Verified end-to-end on real hardware, using real card `21130407`
   showing `Checked In: 1`, `Total Events: 9`, and the event table
   color-coded per status (green/amber/red).
 
+**Correction (post-publication review):** an external technical review
+caught a real problem with the `check-out,0,flagged_short_session` line
+above. Serial timestamps only have 1-second resolution, and `:40` to
+`:41` is a 1-second display gap — which means the *true* millisecond gap
+between those two taps is mathematically guaranteed to be under 2000ms
+(anywhere from ~1ms to ~1999ms, since each timestamp represents a whole
+second window). `isDuplicateScan()` runs before the short-session check
+and fires on anything under `DUPLICATE_WINDOW_MS` (2000ms). So a
+same-second-boundary gap like this should have produced
+`duplicate_ignored`, not `flagged_short_session` — this specific captured
+line is inconsistent with the code as written. It's not clear whether
+the true gap was actually ≥2s and got mis-transcribed, or something else
+was off; rather than guess, this line has been pulled from the README
+pending a re-test with a deliberately wide gap (3+ seconds, verified by
+counting out loud during capture) so the evidence is unambiguous. The
+`duplicate_ignored` and final `success` lines above are unaffected by
+this issue — a 1-second-apart pair is always under 2000ms regardless of
+exact timing, so those two remain valid evidence.
+
+This is left in the log rather than quietly edited out, because catching
+your own evidence being wrong — and fixing it instead of hand-waving
+past it — is the same discipline this whole document has tried to model
+from the RC522 pin bug onward.
+
 ## What's still unverified
 
 - MicroSD card actually writing to a physical card (`sdAvailable` has
