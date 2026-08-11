@@ -2,10 +2,11 @@
 secrets.h
 
 # Never commit real device/org identity or the real card-UID registry —
-# only the .example.h versions in config/ are meant to be public.
-config/organization.h
-config/users_private.h
-config/sites.h
+# only the .example.h versions in firmware/rfid_event_logger/config/ are
+# meant to be public.
+firmware/rfid_event_logger/config/organization.h
+firmware/rfid_event_logger/config/users_private.h
+firmware/rfid_event_logger/config/sites.h
 
 # Arduino IDE
 *.hex

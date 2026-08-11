@@ -4,7 +4,7 @@ Captured on real hardware (the same ESP32/RC522/breadboard rig used for
 the SPS-mode testing), flashed with `ACTIVE_MODE = LAI_MODE` and two of
 the project's existing physical test cards re-registered under synthetic
 tutor identities (`TUTOR-001` / `CARD-T1`, `TUTOR-002` / `CARD-T2`) — see
-`config/users_private.h` (not committed; local to the test device).
+`firmware/rfid_event_logger/config/users_private.h` (not committed; local to the test device).
 
 **This is a synthetic-data engineering test, not an LAI pilot.** No real
 tutor, real card, or real LAI site was involved. It demonstrates the
@@ -81,4 +81,5 @@ verified yet.
 This test used `minValidSessionMs = 8000` (8 seconds) from the *testing*
 example config, not the 15-minute production value LAI leadership would
 need to approve. Don't ship this test threshold to a real pilot device —
-see `config/organization.example.h` and `docs/LAI_MODE.md`.
+see `firmware/rfid_event_logger/config/organization.example.h` and
+`docs/LAI_MODE.md`.

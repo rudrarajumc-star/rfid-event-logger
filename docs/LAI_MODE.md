@@ -51,7 +51,7 @@ pilot, not an assumption carried over from the tutor-only version.
 ## Configuration model
 
 One physical device runs one `OrganizationConfig` — see
-`config/organization.example.h`. Switching a device between SPS and LAI
+`firmware/rfid_event_logger/config/organization.example.h`. Switching a device between SPS and LAI
 is a one-line change (`ACTIVE_MODE`) plus a re-upload; there's no
 runtime toggle. The config controls the dashboard title/subtitle, the
 role label ("Employee" vs "Tutor"), whether a site code is required,
@@ -159,7 +159,7 @@ downstream has to guess).
 ## Site and program codes
 
 `DEVICE_ID`, `SITE_CODE`, `PROGRAM_CODE` are set per physical device in
-the private `config/organization.h` (see `config/organization.example.h`
+the private `firmware/rfid_event_logger/config/organization.h` (see `firmware/rfid_event_logger/config/organization.example.h`
 for the placeholder). For the initial pilot, that's one device, one
 site, hard-coded — no multi-site routing logic exists yet.
 
@@ -167,11 +167,11 @@ site, hard-coded — no multi-site routing logic exists yet.
 
 Issuing a card: confirm identity, get consent, tap the unregistered
 card once (UID prints to Serial), copy that UID into
-`config/users_private.h` with a new anonymous `userCode`/`cardAlias`,
+`firmware/rfid_event_logger/config/users_private.h` with a new anonymous `userCode`/`cardAlias`,
 set `active = true`, re-upload. Revoking: set `active = false` on that
 row — never delete it, since past attendance records reference that
-`userCode` and must stay valid. `config/users_private.h` is gitignored;
-only `config/users.example.h` (fully synthetic UIDs) is public.
+`userCode` and must stay valid. `firmware/rfid_event_logger/config/users_private.h` is gitignored;
+only `firmware/rfid_event_logger/config/users.example.h` (fully synthetic UIDs) is public.
 
 ## Testing status
 

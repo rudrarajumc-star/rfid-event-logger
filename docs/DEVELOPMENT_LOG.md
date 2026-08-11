@@ -213,7 +213,7 @@ resolution problem, not a logic bug. The logic was correct all along; the
 
 Refactored the single-organization firmware into a configurable
 platform: one `OrganizationConfig` struct picked per physical device
-(`config/organization.h`, gitignored) drives the dashboard title, role
+(`firmware/rfid_event_logger/config/organization.h`, gitignored) drives the dashboard title, role
 label, whether a site code is required, and org-specific short/long
 session thresholds, instead of an `SPS`/`LAI` string scattered through
 the code as it was in v1.x's minimal `CURRENT_MODE` flag.
@@ -222,7 +222,7 @@ Along with the config split, the CSV/log schema grew from 8 fields to
 14 (`event_id`, `organization`, `site_code`, `program_code`,
 `card_alias`, `session_id`, `device_id`, `firmware_version` added), raw
 UIDs stopped being logged anywhere in favor of a per-card `alias`, and
-user data moved to a gitignored `config/users_private.h`. See
+user data moved to a gitignored `firmware/rfid_event_logger/config/users_private.h`. See
 `docs/LAI_MODE.md` for the full rationale and schema, and
 `docs/evidence/lai/` for real-hardware test evidence using two
 synthetic tutor identities on the project's existing test cards.

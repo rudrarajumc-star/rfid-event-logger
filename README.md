@@ -1,20 +1,29 @@
 # RFID Event Logger
 
+[![Compile Check](https://github.com/rudrarajumc-star/rfid-event-logger/actions/workflows/compile-check.yml/badge.svg)](https://github.com/rudrarajumc-star/rfid-event-logger/actions/workflows/compile-check.yml)
+
 An ESP32-based RFID check-in/check-out attendance logger with a live web
 dashboard, CSV export, and WiFi/NTP timestamps — built around a
 graceful-degradation design where any optional subsystem can fail without
 stopping the core scan-and-log pipeline.
+
+The badge above means what it says and nothing more: the code compiles
+cleanly for the ESP32 toolchain in both SPS and LAI mode, checked on
+every push. It is not a claim that anything is hardware-verified — the
+status table below and `docs/evidence/lai/` carry that weight
+separately, with actual captured logs, not a green checkmark.
 
 **[Watch the demo](https://youtu.be/MSz-1_x-4so)** · Full debugging
 history: [`docs/DEVELOPMENT_LOG.md`](./docs/DEVELOPMENT_LOG.md)
 
 ### Configurable for more than one organization
 
-As of `v2.0.0-dual-mode`, one firmware supports two independent
+As of `v2.1.0-student-subject`, one firmware supports two independent
 deployment contexts through a single config choice — SPS workforce
 attendance (documented on this page) and LAI tutor attendance /
-volunteer-hour verification, with anonymous tutor codes instead of
-student data. See [`docs/LAI_MODE.md`](./docs/LAI_MODE.md) for that
+volunteer-hour verification (including optional anonymous student
+check-in with subject selection — no names, ever). See
+[`docs/LAI_MODE.md`](./docs/LAI_MODE.md) for that
 mode specifically — **engineering-complete and tested with synthetic
 data, not yet piloted with a real organization**; see
 [`docs/PILOT_PROTOCOL.md`](./docs/PILOT_PROTOCOL.md) for what that would
@@ -128,6 +137,11 @@ caused a real bug — see dev log):
 
 ## Setup
 
+The firmware lives in [`firmware/rfid_event_logger/`](./firmware/rfid_event_logger/)
+— that subfolder name has to match the `.ino` filename exactly, or
+Arduino IDE and `arduino-cli` won't recognize it as a valid sketch.
+Don't rename or move `rfid_event_logger.ino` out of its folder.
+
 1. Install Arduino IDE 2.x + ESP32 board package, plus `MFRC522`,
    `LiquidCrystal_I2C`, `SD`, and `WebServer` (last two ship with the
    ESP32 board package).
@@ -135,21 +149,25 @@ caused a real bug — see dev log):
 3. **Create your private config files — the sketch will not compile
    without them:**
    ```bash
-   cp config/organization.example.h config/organization.h
-   cp config/users.example.h config/users_private.h
+   cd firmware/rfid_event_logger/config
+   cp organization.example.h organization.h
+   cp users.example.h users_private.h
    ```
-   Both are gitignored. Edit `config/organization.h` to pick
-   `SPS_MODE` or `LAI_MODE`, and `config/users_private.h` to register
-   real cards (see step 6). Full details in
-   [`docs/LAI_MODE.md`](./docs/LAI_MODE.md) if you're setting up LAI
-   mode specifically.
-4. Open `rfid_event_logger.ino`, select **ESP32 Dev Module**.
+   Both are gitignored. Edit `organization.h` to pick `SPS_MODE` or
+   `LAI_MODE`, and `users_private.h` to register real cards (see step
+   6). Full details in [`docs/LAI_MODE.md`](./docs/LAI_MODE.md) if
+   you're setting up LAI mode specifically.
+4. Open `firmware/rfid_event_logger/rfid_event_logger.ino` in Arduino
+   IDE (opening the `.ino` directly is fine — just don't let the IDE
+   move it to a differently-named folder if it ever offers to), select
+   **ESP32 Dev Module**.
 5. Fill in `WIFI_SSID` / `WIFI_PASSWORD` **locally only** — see security
    note below, never commit real credentials.
 6. Upload, open Serial Monitor at 115200 baud.
 7. Tap an unregistered card — its UID prints to Serial. Copy it into a
-   new row in `config/users_private.h` with an anonymous code and
-   alias (e.g. `TUTOR-004`, `CARD-T4`), set `active = true`, re-upload.
+   new row in `firmware/rfid_event_logger/config/users_private.h` with
+   an anonymous code and alias (e.g. `TUTOR-004`, `CARD-T4`), set
+   `active = true`, re-upload.
 8. Once WiFi connects, visit the printed dashboard URL in a browser on
    the same network.
 

@@ -34,7 +34,7 @@ collect it, the schema itself doesn't have anywhere to put it.
 
 ## Where the real-identity mapping lives
 
-The only place a card's real owner is knowable is `config/users_private.h`
+The only place a card's real owner is knowable is `firmware/rfid_event_logger/config/users_private.h`
 on the specific physical device that was flashed with it — a local file,
 gitignored, never committed. Revoking someone's access means setting
 `active = false` on their row in that file; their anonymous code and
@@ -51,7 +51,7 @@ this isn't treated as a credential leak, but it's a real gap between
 "anonymized in the current files" and "never existed in history."
 Rewriting git history to remove it is possible (`git filter-repo` or
 BFG) but hasn't been done. The LAI side of this repo starts clean —
-`config/users_private.h` was never committed even once, so there's no
+`firmware/rfid_event_logger/config/users_private.h` was never committed even once, so there's no
 equivalent history to clean up here, provided that discipline holds for
 every future commit.
 
@@ -67,7 +67,7 @@ every future commit.
   synthetic test data (like the `TUTOR-001`/`TUTOR-002` evidence in
   `docs/evidence/lai/`) linger on a device that later goes into real
   use.
-- `config/organization.h` and `config/users_private.h` never leave the
+- `firmware/rfid_event_logger/config/organization.h` and `firmware/rfid_event_logger/config/users_private.h` never leave the
   device they're flashed to — no cloud sync of those two files.
 - Decide, before a pilot, who is allowed to download CSV/hours exports
   and where those downloaded copies are allowed to live.
