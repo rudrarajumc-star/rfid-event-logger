@@ -17,6 +17,7 @@ separately, with actual captured logs, not a green checkmark.
 history: [`docs/DEVELOPMENT_LOG.md`](./docs/DEVELOPMENT_LOG.md)
 
 ### Configurable for more than one organization
+Since August, one device has been used by about ~15 employees at Turbomodus to log server-room checks, on a private internal network. Logs from real use are not published because the company doesn't share its data; the logs in this repo are test data. LAI mode has not been used with real tutors or students.
 
 As of `v2.1.0-student-subject`, one firmware supports two independent
 deployment contexts through a single config choice — SPS workforce
@@ -237,12 +238,11 @@ actual wired board and the live dashboard, not mockups.
   showing `OFF` for unverified subsystems — see dev log.
 - MicroSD logging and physical LCD output are implemented with tested
   graceful-degradation paths but not yet verified on hardware.
-- No dashboard/CSV authentication — suitable only for a controlled
-  demonstration; authentication is required before processing real
-  attendance data.
+- No dashboard login. It runs only on a private internal network;
+  add authentication before any wider use.
 - Duplicate/anomaly thresholds (2s/5s) are tunable `const`s, not
   guarantees — a legitimately fast visit could still get flagged.
-- This is a single-device prototype: no backend, database, or
+- This is a single-device build: no backend, database, or
   multi-device sync. See `docs/DEVELOPMENT_LOG.md` for the full history
   and `PUBLISH_CHECKLIST.md` for what's still open.
 - Card IDs and user codes in this README/dev log are anonymized
