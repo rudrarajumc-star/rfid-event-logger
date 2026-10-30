@@ -47,8 +47,7 @@ as working unless it was actually observed working.
 | Duplicate-scan suppression (2s window) | **Verified** |
 | Short-session anomaly flag (2–5s window) | **Verified** — re-tested with millisecond diagnostics, see note below |
 | Dashboard overview stats | **Verified** |
-| MicroSD card logging | **Pending** — wired, not yet verified writing |
-| Backend / database / multi-device sync | **Not built** — out of scope for this prototype |
+| MicroSD card logging | **Pending** — wired, still glitchy |
 
 > **Resolved:** an earlier version of this README had a short-session
 > example with timestamps only 1 second apart, which is mathematically
