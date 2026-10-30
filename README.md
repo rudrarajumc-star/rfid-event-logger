@@ -48,7 +48,6 @@ as working unless it was actually observed working.
 | Short-session anomaly flag (2–5s window) | **Verified** — re-tested with millisecond diagnostics, see note below |
 | Dashboard overview stats | **Verified** |
 | MicroSD card logging | **Pending** — wired, not yet verified writing |
-| Physical LCD output | **Pending** — hardware not yet installed |
 | Backend / database / multi-device sync | **Not built** — out of scope for this prototype |
 
 > **Resolved:** an earlier version of this README had a short-session
