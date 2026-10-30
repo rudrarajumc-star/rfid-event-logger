@@ -17,7 +17,8 @@ separately, with actual captured logs, not a green checkmark.
 history: [`docs/DEVELOPMENT_LOG.md`](./docs/DEVELOPMENT_LOG.md)
 
 ### Configurable for more than one organization
-Since August, one device has been used by about ~15 employees at Turbomodus to log server-room checks, on a private internal network. Logs from real use are not published because the company doesn't share its data; the logs in this repo are test data. LAI mode has not been used with real tutors or students.
+Since August, one device has been used by about **~15 employees** at Turbomodus to log server-room checks, on a private internal network. Logs from real use are not published because the company doesn't share its data; the logs in this repo are test data. LAI mode has not been used with real tutors or students.
+At Turbomodus, the company firewall blocks the ESP32 from the network, so the reader is wired to a written-off Mac mini that serves the dashboard locally (by IP address on that machine). The ESP32’s own Wi-Fi dashboard is what’s documented below.
 
 As of `v2.1.0-student-subject`, one firmware supports two independent
 deployment contexts through a single config choice — SPS workforce
